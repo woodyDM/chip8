@@ -3,7 +3,7 @@ package cn.deepmax.em.chip8;
 public class Timer {
 
     private int hz = 60;
-    private long perLoop = (long) (1E9 / hz);
+    protected long perLoop = (long) (1E9 / hz);
     private long nextCountDown;
     private int counter;
 

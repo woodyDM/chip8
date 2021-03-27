@@ -39,7 +39,7 @@ public class Chip8 extends Application {
         scene.setOnKeyReleased(board.getReleaseHandler());
 
         short[] rom = ROMLoader.loadRomFromFile(file);
-        CPU cpu = new CPU(rom, board, display);
+        CPU cpu = new CPU(rom, board, display,new SoundTimer());
 
         Ticker displayTicker = new Ticker(60, display::update);
         Ticker cpuTicker = new Ticker(512);
@@ -55,6 +55,10 @@ public class Chip8 extends Application {
                 primaryStage.setTitle(title);
             });
         });
+        cpuTicker.setOnError(t->{
+            showClose("Error occurs");
+            throw new RuntimeException(t);
+        });
 
         primaryStage.setResizable(false);
         primaryStage.setTitle("Chip8");
@@ -68,7 +72,7 @@ public class Chip8 extends Application {
     private File getDir() {
         String path = System.getProperty("user.dir");
         if (path == null || path.equals("")) {
-            return new File("");//参数为空
+            return new File("");
         }
         return new File(path);
     }
@@ -85,7 +89,12 @@ public class Chip8 extends Application {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Chip8");
         alert.setHeaderText("Choose chip8 rom and continue");
-        alert.setContentText("Key Mappings,:\n1  2  3  4\nQ W E R\nA S D F\nZ X C V\n");
+
+        alert.setContentText("---------   ---------\n" +
+                " 1 2 3 C     1 2 3 4\n" +
+                " 4 5 6 D     Q W E R\n" +
+                " 7 8 9 E     A S D F\n" +
+                " A 0 B F     Z X C V");
         return alert;
     }
 

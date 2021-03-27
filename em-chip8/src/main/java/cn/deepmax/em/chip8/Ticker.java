@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 /**
  * @author wudi
@@ -21,6 +22,11 @@ public class Ticker {
     private RunnableWrapper task;
     private volatile boolean stop = false;
     private CountDownLatch latch;
+    private Consumer<Throwable> onError;
+
+    public void setOnError(Consumer<Throwable> onError) {
+        this.onError = onError;
+    }
 
     private static String getThreadName() {
         return "Ticker-Thread-" + THREAD_INDEX.getAndIncrement();
@@ -102,8 +108,7 @@ public class Ticker {
                 try {
                     target.run();
                 } catch (Throwable t) {
-                    System.err.println("Tick error: " + t.getMessage());
-                    t.printStackTrace();
+                    onError(t);
                 }
                 sleepTime = perNano - (System.nanoTime() - thisTime) - 1000_000;
                 if (sleepTime > 0) {
@@ -121,6 +126,12 @@ public class Ticker {
             if (latch != null) {
                 latch.countDown();
             }
+        }
+    }
+
+    private void onError(Throwable t) {
+        if (onError != null) {
+            onError.accept(t);
         }
     }
 

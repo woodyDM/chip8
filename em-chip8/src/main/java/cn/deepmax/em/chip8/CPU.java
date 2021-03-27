@@ -23,13 +23,13 @@ public class CPU {
     private Keys keys;
     private Display display;
     private Timer delayTimer = new Timer();
-    private Timer soundTimer = new Timer();
+    private Timer soundTimer  ;
     private final Random random = new Random();
 
-    public CPU(short[] rom, Keys keys, Display display) {
+    public CPU(short[] rom, Keys keys, Display display,Timer soundTimer ) {
         this.keys = keys;
         this.display = display;
-
+        this.soundTimer = soundTimer;
         loadFontAndRom(rom);
     }
 
