@@ -1,0 +1,46 @@
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.8'
+    id 'org.beryx.jlink' version '2.22.2'
+
+}
+javafx {
+    version = "15.0.1"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+
+dependencies {
+    implementation project(":em-chip8")
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testCompileOnly 'junit:junit:4.13'
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine'
+}
+
+application {
+    mainModule = 'em.gui'
+    mainClass = 'cn.deepmax.em.gui.Chip8'
+}
+// https://stackoverflow.com/questions/51864473/where-do-resource-files-go-in-a-gradle-project-that-builds-a-java-9-module/51921521
+sourceSets {
+    main {
+        output.setResourcesDir(java.outputDir)
+    }
+}
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'cn.deepmax.app.de.gui.Main'
+    }
+    archiveBaseName = 'de-fat-jar'
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+jlink {
+    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    launcher {
+        name = 'em.gui'
+    }
+}

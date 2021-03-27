@@ -1,0 +1,4 @@
+rootProject.name = 'em'
+
+include 'em-chip8'
+include 'em-gui'

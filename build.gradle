@@ -1,0 +1,28 @@
+subprojects {
+    version = '0.0.1'
+    group = 'cn.deepmax.em'
+
+    repositories {
+        jcenter()
+    }
+
+    plugins.withType(JavaPlugin).configureEach {
+        java {
+            modularity.inferModulePath = true
+        }
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+        // options.compilerArgs += '--enable-preview'
+    }
+//    tasks.withType(JavaExec) {
+//        jvmArgs += '--enable-preview'
+//        // jvmArgs += '-XX:+ShowCodeDetailsInExceptionMessages'
+//    }
+//
+//    tasks.withType(Test).configureEach {
+//        jvmArgs += "--enable-preview"
+//        useJUnitPlatform()
+//    }
+}
