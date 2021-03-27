@@ -66,7 +66,11 @@ public class Ticker {
     }
 
     public String getFps() {
-        BigDecimal d = new BigDecimal(task.getFps());
+        double fps = task.getFps();
+        if (Double.isFinite(fps) || Double.isInfinite(fps) || Double.isNaN(fps)) {
+            return "N/A";
+        }
+        BigDecimal d = new BigDecimal(fps);
         BigDecimal n = d.setScale(1, RoundingMode.HALF_UP);
         return n.toString();
     }
