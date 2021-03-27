@@ -85,9 +85,7 @@ public class CPU {
                         op_00EE(opcode);
                         break;
                     default:
-                        System.out.println("Unsupported code " + opcode);
-                        next();
-                        break;
+                        throw new UnsupportedOperationException();
                 }
                 break;
             case 0x1000:

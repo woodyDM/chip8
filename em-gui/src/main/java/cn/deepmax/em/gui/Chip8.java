@@ -48,15 +48,15 @@ public class Chip8 extends Application {
             if (!goon) {
                 cpuTicker.stop();
                 displayTicker.stop();
-                showClose("Game reach end");
+                showClose("Program reaches end");
             }
             Platform.runLater(()->{
-                String title = String.format("CPU: %sHZ,UI: %sHz", cpuTicker.getFps(), displayTicker.getFps());
+                String title = String.format("CPU: %s Hz,UI: %s Hz", cpuTicker.getFps(), displayTicker.getFps());
                 primaryStage.setTitle(title);
             });
         });
         cpuTicker.setOnError(t->{
-            showClose("Error occurs");
+            showClose("Some error occurs, program shutting down");
             throw new RuntimeException(t);
         });
 
@@ -100,7 +100,7 @@ public class Chip8 extends Application {
 
     private void showClose(String message) {
         Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Chip8");
             alert.setHeaderText(message);
             alert.showAndWait();
